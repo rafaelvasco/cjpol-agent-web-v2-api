@@ -156,7 +156,7 @@ export const wordpressAuth = async (
       res.cookie('access_token', accessToken, {
         httpOnly: true,
         secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
-        sameSite: 'strict',
+        sameSite: (req.secure || req.headers['x-forwarded-proto'] === 'https') ? 'none' : 'lax',
         maxAge: SESSION_COOKIE_MAX_AGE
       });
       

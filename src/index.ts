@@ -83,8 +83,11 @@ app.use(cookieParser());
 app.use(cors({
   origin: CORS_ORIGIN,
   credentials: true,
-  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Token']
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Token', 'X-Requested-With'],
+  exposedHeaders: ['X-CSRF-Token'],
+  preflightContinue: false,
+  optionsSuccessStatus: 200
 }));
 
 // Set up session
@@ -97,7 +100,7 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: IS_PRODUCTION,
-    sameSite: 'strict',
+    sameSite: IS_PRODUCTION ? 'none' : 'lax',
     maxAge: SESSION_COOKIE_MAX_AGE
   }
 }));
